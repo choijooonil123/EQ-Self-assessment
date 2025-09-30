@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EQ 자기 진단 (20문항)</title>
+<meta name="description" content="감성지능(EQ) 20문항 자기진단 — 자기인식/자기관리/사회인식/관계관리 점수 자동 계산" />
+<style>
+:root {
+--bg: #0b1220;
+--panel: #121a2b;
+--muted: #9fb3c8;
+--text: #eaf2ff;
+--accent: #5eead4;
+--accent-2: #93c5fd;
+--danger: #fca5a5;
+--warn: #fde68a;
+--ok: #86efac;
+--radius: 14px;
+}
+* { box-sizing: border-box; }
+body {
+margin: 0; padding: 24px; font-family: system-ui, -apple-system, Segoe UI, Roboto, Apple SD Gothic Neo, Noto Sans KR, sans-serif;
+background: radial-gradient(1200px 700px at 10% -10%, #16213a 0, transparent 60%),
+radial-gradient(1000px 600px at 110% 10%, #1a2440 0, transparent 60%),
+var(--bg);
+color: var(--text);
+}
+header { max-width: 960px; margin: 0 auto 16px auto; }
+h1 { margin: 0 0 6px 0; font-size: 28px; }
+p.lead { margin: 0 0 16px 0; color: var(--muted); }
+
+
+.card { max-width: 960px; margin: 0 auto 18px auto; background: linear-gradient(180deg, #131d31, #0f172a);
+border: 1px solid #1f2a44; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,.3);
+}
+.card .head { display:flex; gap:12px; align-items:center; padding:16px 16px 0 16px; }
+.card .body { padding: 16px; }
+
+
+.row { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media (min-width: 800px) { .row { grid-template-columns: 1fr 1fr; } }
+
+
+details.group { background: #0e1628; border: 1px solid #1e2a45; border-radius: 12px; overflow: hidden; }
+summary { list-style: none; cursor: pointer; padding: 14px 16px; font-weight: 700; display:flex; align-items:center; justify-content:space-between; }
+summary::-webkit-details-marker { display:none; }
+summary span.label { color: var(--accent); }
+.q { padding: 12px 16px; border-top: 1px solid #1e2a45; }
+
+
+.scale { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.scale label { display:flex; align-items:center; gap:6px; background:#0c1424; border:1px solid #1e2a45; border-radius: 10px; padding:6px 10px; cursor:pointer; }
+.scale input { accent-color: var(--accent); }
+
+
+.toolbar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:flex-end; }
+button, .btn {
+background: linear-gradient(180deg, #1f324f, #182742);
+color: var(--text); border:1px solid #2a3e63; border-radius: 10px; padding: 10px 12px; cursor: pointer;
+}
+button:hover { filter: brightness(1.05); }
+.btn-ghost { background: transparent; border-color:#2a3e63; }
+.btn-accent { background: linear-gradient(180deg, #1f504a, #153a34); border-color:#2b6b62; }
+
+
+.results { display:grid; gap:12px; grid-template-columns: 1fr; }
+@media (min-width: 800px) { .results { grid-template-columns: repeat(5,1fr); } }
+.stat { background:#0e1628; border:1px solid #1e2a45; padding:14px; border-radius: 12px; }
+.stat h3 { margin:0 0 6px 0; font-size:14px; color: var(--muted); }
+.stat .v { font-size: 26px; font-weight: 800; }
+.pill { display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px; font-size:12px; }
+.pill.ok { background: #0f2a1a; color:#b7f7c9; border:1px solid #1f5a38; }
+.pill.warn { background: #2a260f; color:#fff3b0; border:1px solid #5a5120; }
+.pill.bad { background: #2a1313; color:#ffd3d3; border:1px solid #5a2020; }
+.muted { color: var(--muted); font-size: 14px; }
+footer { max-width:960px; margin: 24px auto 0; color: var(--muted); font-size: 12px; text-align:center; }
+.hint { font-size: 12px; color: var(--muted); }
+</style>
+</head>
+</html>
