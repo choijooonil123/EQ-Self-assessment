@@ -70,12 +70,66 @@
     .muted { color: var(--muted); font-size: 14px; }
     footer { max-width:960px; margin: 24px auto 0; color: var(--muted); font-size: 12px; text-align:center; }
     .hint { font-size: 12px; color: var(--muted); }
+  @media print {
+    @page { size: A4 portrait; margin: 10mm; }
+    html, body { background: #ffffff !important; color: #000 !important; padding: 0 !important; }
+    * { box-shadow: none !important; }
+    header, .card, footer { max-width: none !important; margin: 0 !important; background: #fff !important; border: none !important; }
+    h1 { font-size: 18pt; margin: 0 0 6pt 0; }
+    p.lead { font-size: 9pt; color: #000; margin-bottom: 6pt; }
+
+    /* 화면 전용 요소 숨김 */
+    .toolbar, .btn, #btn-print, .card .head { display: none !important; }
+
+    /* 레이아웃 컴팩트화 */
+    .card .body { padding: 8px !important; }
+    .row { grid-template-columns: 1fr !important; gap: 6px !important; }
+    details.group { border: 0.5px solid #ddd !important; background: #fff !important; }
+    summary { padding: 6px 8px !important; font-size: 11pt !important; color: #000 !important; }
+    .q { padding: 6px 8px !important; border-top: 0.5px solid #ddd !important; }
+
+    /* 척도: 라디오rint {
+    @page { size: A4 portrait; margin: 10mm; }
+    html, body { background: #ffffff !important; color: #000 !important; padding: 0 !important; }
+    * { box-shadow: none !important; }
+    header, .card, footer { max-width: none !important; margin: 0 !important; background: #fff !important; border: none !important; }
+    h1 { font-size: 18pt; margin: 0 0 6pt 0; }
+    p.lead { font-size: 9pt; color: #000; margin-bottom: 6pt; }
+
+    /* 화면 전용 요소 숨김 */
+    .toolbar, .btn, #btn-print, .card .head { display: none !important; }
+
+    /* 레이아웃 컴팩트화 */
+    .card .body { padding: 8px !important; }
+    .row { grid-template-columns: 1fr !important; gap: 6px !important; }
+    details.group { border: 0.5px solid #ddd !important; background: #fff !important; }
+    summary { padding: 6px 8px !important; font-size: 11pt !important; color: #000 !important; }
+    .q { padding: 6px 8px !important; border-top: 0.5px solid #ddd !important; }
+
+    /* 척도: 라디오만 보이게(문구는 생략) → 한 페이지에 맞춤 bel { font-size: 0 !important; padding: 2px 4px !important; border-color: #ccc !important; background: #fff !important; }
+    .scale input { transform: scale(0.9); }
+과 카드 컴팩트 */
+    .results { grid-template-columns: repeat(5, 1fr) !important; gap: 6px !important; }
+    .stat { padding: 6px !important; border: 0.5px solid #ccc !important; background: #fff !important; }
+    .stat .v { font-size: 14pt !important; color: #000 !important; }
+    .pill { font-size: 9pt !important; padding: 2px 6px !important; border: 0.5px solid #999 !important; }
+
+    /* 페이지 나눔 최소화 */
+    details.group, .stat, .results, .q { break-inside: avoid !important; page-break-inside: avoid !important; }
+
+    /* 전체 축소(여백/브라우저 차이 보정) */
+    body { zoom: 0.88; }
+  }
+
+  .print-only { display: none; }
+  @media print { .print-only { display: block; } .screen-only { display:none; } }
   </style>
 </head>
 <body>
   <header>
     <h1>EQ 자기 진단 (20문항)</h1>
     <p class="lead">감성지능(EQ)의 네 영역 — <strong>자기인식</strong>, <strong>자기관리</strong>, <strong>사회인식</strong>, <strong>관계관리</strong> — 을 1~5점 척도로 응답하세요. 결과는 자동으로 계산됩니다.</p>
+    <p class="print-only" style="margin-top:6px;font-size:10pt;color:#000">인쇄 안내: A4 한 페이지에 맞춰 축소 출력됩니다. 척도 표시는 라디오(○)로 표시되며, 척도값은 1~5입니다.</p>
   </header>
 
   <section class="card">
