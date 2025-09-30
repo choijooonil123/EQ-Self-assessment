@@ -1,81 +1,341 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>EQ 자기 진단 (20문항)</title>
-<meta name="description" content="감성지능(EQ) 20문항 자기진단 — 자기인식/자기관리/사회인식/관계관리 점수 자동 계산" />
-<style>
-:root {
---bg: #0b1220;
---panel: #121a2b;
---muted: #9fb3c8;
---text: #eaf2ff;
---accent: #5eead4;
---accent-2: #93c5fd;
---danger: #fca5a5;
---warn: #fde68a;
---ok: #86efac;
---radius: 14px;
-}
-* { box-sizing: border-box; }
-body {
-margin: 0; padding: 24px; font-family: system-ui, -apple-system, Segoe UI, Roboto, Apple SD Gothic Neo, Noto Sans KR, sans-serif;
-background: radial-gradient(1200px 700px at 10% -10%, #16213a 0, transparent 60%),
-radial-gradient(1000px 600px at 110% 10%, #1a2440 0, transparent 60%),
-var(--bg);
-color: var(--text);
-}
-header { max-width: 960px; margin: 0 auto 16px auto; }
-h1 { margin: 0 0 6px 0; font-size: 28px; }
-p.lead { margin: 0 0 16px 0; color: var(--muted); }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EQ 자기 진단 (20문항)</title>
+  <meta name="description" content="감성지능(EQ) 20문항 자기진단 — 자기인식/자기관리/사회인식/관계관리 점수 자동 계산" />
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #121a2b;
+      --muted: #9fb3c8;
+      --text: #eaf2ff;
+      --accent: #5eead4;
+      --accent-2: #93c5fd;
+      --danger: #fca5a5;
+      --warn: #fde68a;
+      --ok: #86efac;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 24px; font-family: system-ui, -apple-system, Segoe UI, Roboto, Apple SD Gothic Neo, Noto Sans KR, sans-serif;
+      background: radial-gradient(1200px 700px at 10% -10%, #16213a 0, transparent 60%),
+                  radial-gradient(1000px 600px at 110% 10%, #1a2440 0, transparent 60%),
+                  var(--bg);
+      color: var(--text);
+    }
+    header { max-width: 960px; margin: 0 auto 16px auto; }
+    h1 { margin: 0 0 6px 0; font-size: 28px; }
+    p.lead { margin: 0 0 16px 0; color: var(--muted); }
 
+    .card { max-width: 960px; margin: 0 auto 18px auto; background: linear-gradient(180deg, #131d31, #0f172a);
+      border: 1px solid #1f2a44; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,.3);
+    }
+    .card .head { display:flex; gap:12px; align-items:center; padding:16px 16px 0 16px; }
+    .card .body { padding: 16px; }
 
-.card { max-width: 960px; margin: 0 auto 18px auto; background: linear-gradient(180deg, #131d31, #0f172a);
-border: 1px solid #1f2a44; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,.3);
-}
-.card .head { display:flex; gap:12px; align-items:center; padding:16px 16px 0 16px; }
-.card .body { padding: 16px; }
+    .row { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 800px) { .row { grid-template-columns: 1fr 1fr; } }
 
+    details.group { background: #0e1628; border: 1px solid #1e2a45; border-radius: 12px; overflow: hidden; }
+    summary { list-style: none; cursor: pointer; padding: 14px 16px; font-weight: 700; display:flex; align-items:center; justify-content:space-between; }
+    summary::-webkit-details-marker { display:none; }
+    summary span.label { color: var(--accent); }
+    .q { padding: 12px 16px; border-top: 1px solid #1e2a45; }
 
-.row { display: grid; grid-template-columns: 1fr; gap: 12px; }
-@media (min-width: 800px) { .row { grid-template-columns: 1fr 1fr; } }
+    .scale { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+    .scale label { display:flex; align-items:center; gap:6px; background:#0c1424; border:1px solid #1e2a45; border-radius: 10px; padding:6px 10px; cursor:pointer; }
+    .scale input { accent-color: var(--accent); }
 
+    .toolbar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:flex-end; }
+    button, .btn {
+      background: linear-gradient(180deg, #1f324f, #182742);
+      color: var(--text); border:1px solid #2a3e63; border-radius: 10px; padding: 10px 12px; cursor: pointer;
+    }
+    button:hover { filter: brightness(1.05); }
+    .btn-ghost { background: transparent; border-color:#2a3e63; }
+    .btn-accent { background: linear-gradient(180deg, #1f504a, #153a34); border-color:#2b6b62; }
 
-details.group { background: #0e1628; border: 1px solid #1e2a45; border-radius: 12px; overflow: hidden; }
-summary { list-style: none; cursor: pointer; padding: 14px 16px; font-weight: 700; display:flex; align-items:center; justify-content:space-between; }
-summary::-webkit-details-marker { display:none; }
-summary span.label { color: var(--accent); }
-.q { padding: 12px 16px; border-top: 1px solid #1e2a45; }
-
-
-.scale { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
-.scale label { display:flex; align-items:center; gap:6px; background:#0c1424; border:1px solid #1e2a45; border-radius: 10px; padding:6px 10px; cursor:pointer; }
-.scale input { accent-color: var(--accent); }
-
-
-.toolbar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:flex-end; }
-button, .btn {
-background: linear-gradient(180deg, #1f324f, #182742);
-color: var(--text); border:1px solid #2a3e63; border-radius: 10px; padding: 10px 12px; cursor: pointer;
-}
-button:hover { filter: brightness(1.05); }
-.btn-ghost { background: transparent; border-color:#2a3e63; }
-.btn-accent { background: linear-gradient(180deg, #1f504a, #153a34); border-color:#2b6b62; }
-
-
-.results { display:grid; gap:12px; grid-template-columns: 1fr; }
-@media (min-width: 800px) { .results { grid-template-columns: repeat(5,1fr); } }
-.stat { background:#0e1628; border:1px solid #1e2a45; padding:14px; border-radius: 12px; }
-.stat h3 { margin:0 0 6px 0; font-size:14px; color: var(--muted); }
-.stat .v { font-size: 26px; font-weight: 800; }
-.pill { display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px; font-size:12px; }
-.pill.ok { background: #0f2a1a; color:#b7f7c9; border:1px solid #1f5a38; }
-.pill.warn { background: #2a260f; color:#fff3b0; border:1px solid #5a5120; }
-.pill.bad { background: #2a1313; color:#ffd3d3; border:1px solid #5a2020; }
-.muted { color: var(--muted); font-size: 14px; }
-footer { max-width:960px; margin: 24px auto 0; color: var(--muted); font-size: 12px; text-align:center; }
-.hint { font-size: 12px; color: var(--muted); }
-</style>
+    .results { display:grid; gap:12px; grid-template-columns: 1fr; }
+    @media (min-width: 800px) { .results { grid-template-columns: repeat(5,1fr); } }
+    .stat { background:#0e1628; border:1px solid #1e2a45; padding:14px; border-radius: 12px; }
+    .stat h3 { margin:0 0 6px 0; font-size:14px; color: var(--muted); }
+    .stat .v { font-size: 26px; font-weight: 800; }
+    .pill { display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px; font-size:12px; }
+    .pill.ok { background: #0f2a1a; color:#b7f7c9; border:1px solid #1f5a38; }
+    .pill.warn { background: #2a260f; color:#fff3b0; border:1px solid #5a5120; }
+    .pill.bad { background: #2a1313; color:#ffd3d3; border:1px solid #5a2020; }
+    .muted { color: var(--muted); font-size: 14px; }
+    footer { max-width:960px; margin: 24px auto 0; color: var(--muted); font-size: 12px; text-align:center; }
+    .hint { font-size: 12px; color: var(--muted); }
+  </style>
 </head>
+<body>
+  <header>
+    <h1>EQ 자기 진단 (20문항)</h1>
+    <p class="lead">감성지능(EQ)의 네 영역 — <strong>자기인식</strong>, <strong>자기관리</strong>, <strong>사회인식</strong>, <strong>관계관리</strong> — 을 1~5점 척도로 응답하세요. 결과는 자동으로 계산됩니다.</p>
+  </header>
+
+  <section class="card">
+    <div class="head">
+      <div class="toolbar" style="margin-left:auto">
+        <button id="btn-calc" class="btn-accent">점수 계산</button>
+        <button id="btn-reset" class="btn-ghost">초기화</button>
+        <button id="btn-export" class="btn-ghost">CSV 내보내기</button>
+        <button id="btn-share" class="btn-ghost">링크 공유</button>
+        <button id="btn-print" class="btn-ghost">인쇄</button>
+      </div>
+    </div>
+    <div class="body">
+      <div class="row">
+        <!-- A. 자기인식 -->
+        <details class="group" open>
+          <summary><span class="label">A. 자기인식 (Self-Awareness)</span><span class="hint">문항 1-5</span></summary>
+          <div class="q">
+            <div>1) 나는 내가 지금 어떤 감정을 느끼는지 잘 알아차린다.</div>
+            <div class="scale" data-id="1" data-domain="자기인식"></div>
+          </div>
+          <div class="q">
+            <div>2) 나는 나의 강점과 약점을 비교적 정확히 알고 있다.</div>
+            <div class="scale" data-id="2" data-domain="자기인식"></div>
+          </div>
+          <div class="q">
+            <div>3) 기분이 변하면 내 행동과 말투도 달라진다는 것을 의식한다.</div>
+            <div class="scale" data-id="3" data-domain="자기인식"></div>
+          </div>
+          <div class="q">
+            <div>4) 중요한 결정을 내릴 때 내 감정이 어떤 영향을 미치는지 고려한다.</div>
+            <div class="scale" data-id="4" data-domain="자기인식"></div>
+          </div>
+          <div class="q">
+            <div>5) 나는 내 가치관과 그것이 내 행동에 미치는 영향을 이해한다.</div>
+            <div class="scale" data-id="5" data-domain="자기인식"></div>
+          </div>
+        </details>
+
+        <!-- B. 자기관리 -->
+        <details class="group" open>
+          <summary><span class="label">B. 자기관리 (Self-Management)</span><span class="hint">문항 6-10</span></summary>
+          <div class="q">
+            <div>6) 화가 나거나 속상할 때 감정을 잘 조절할 수 있다.</div>
+            <div class="scale" data-id="6" data-domain="자기관리"></div>
+          </div>
+          <div class="q">
+            <div>7) 스트레스를 받을 때 나만의 해소 방법을 활용한다.</div>
+            <div class="scale" data-id="7" data-domain="자기관리"></div>
+          </div>
+          <div class="q">
+            <div>8) 예상치 못한 상황에서도 침착하게 대처하려 노력한다.</div>
+            <div class="scale" data-id="8" data-domain="자기관리"></div>
+          </div>
+          <div class="q">
+            <div>9) 실수 후 금방 회복하고 다시 도전한다.</div>
+            <div class="scale" data-id="9" data-domain="자기관리"></div>
+          </div>
+          <div class="q">
+            <div>10) 목표를 세우면 꾸준히 노력하여 성취하려는 의지가 강하다.</div>
+            <div class="scale" data-id="10" data-domain="자기관리"></div>
+          </div>
+        </details>
+
+        <!-- C. 사회인식 -->
+        <details class="group" open>
+          <summary><span class="label">C. 사회인식 (Social Awareness)</span><span class="hint">문항 11-15</span></summary>
+          <div class="q">
+            <div>11) 다른 사람의 감정을 표정이나 행동을 보고 잘 파악한다.</div>
+            <div class="scale" data-id="11" data-domain="사회인식"></div>
+          </div>
+          <div class="q">
+            <div>12) 상대의 이야기를 들을 때 그 사람의 입장에서 공감하려 한다.</div>
+            <div class="scale" data-id="12" data-domain="사회인식"></div>
+          </div>
+          <div class="q">
+            <div>13) 집단이나 모임의 분위기를 민감하게 느끼는 편이다.</div>
+            <div class="scale" data-id="13" data-domain="사회인식"></div>
+          </div>
+          <div class="q">
+            <div>14) 주변 사람들이 무엇을 필요로 하는지 자주 관찰하고 알아차린다.</div>
+            <div class="scale" data-id="14" data-domain="사회인식"></div>
+          </div>
+          <div class="q">
+            <div>15) 갈등 상황에서 여러 사람의 관점을 균형 있게 이해하려 한다.</div>
+            <div class="scale" data-id="15" data-domain="사회인식"></div>
+          </div>
+        </details>
+
+        <!-- D. 관계관리 -->
+        <details class="group" open>
+          <summary><span class="label">D. 관계관리 (Relationship Management)</span><span class="hint">문항 16-20</span></summary>
+          <div class="q">
+            <div>16) 다른 사람에게 동기를 부여하거나 격려하는 말을 잘한다.</div>
+            <div class="scale" data-id="16" data-domain="관계관리"></div>
+          </div>
+          <div class="q">
+            <div>17) 갈등이 생겼을 때 건설적으로 해결하려 노력한다.</div>
+            <div class="scale" data-id="17" data-domain="관계관리"></div>
+          </div>
+          <div class="q">
+            <div>18) 팀 활동에서 협력을 이끌고 분위기를 조율한다.</div>
+            <div class="scale" data-id="18" data-domain="관계관리"></div>
+          </div>
+          <div class="q">
+            <div>19) 설득이나 의견 제시를 할 때 상대방의 입장을 고려한다.</div>
+            <div class="scale" data-id="19" data-domain="관계관리"></div>
+          </div>
+          <div class="q">
+            <div>20) 새로운 관계를 맺고 유지하는 데 적극적이다.</div>
+            <div class="scale" data-id="20" data-domain="관계관리"></div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="body">
+      <h2 style="margin-top:0">결과</h2>
+      <div class="results" id="results">
+        <div class="stat"><h3>총점 (20~100)</h3><div class="v" id="total">—</div><div class="pill" id="badge">—</div></div>
+        <div class="stat"><h3>A. 자기인식 (최대 25)</h3><div class="v" id="sa">—</div></div>
+        <div class="stat"><h3>B. 자기관리 (최대 25)</h3><div class="v" id="sm">—</div></div>
+        <div class="stat"><h3>C. 사회인식 (최대 25)</h3><div class="v" id="so">—</div></div>
+        <div class="stat"><h3>D. 관계관리 (최대 25)</h3><div class="v" id="rm">—</div></div>
+      </div>
+      <p class="muted" id="hint">모든 문항에 응답하면 점수와 해석이 표시됩니다.</p>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 EQ Self-Assessment · MIT License · 제작: 당신의 수업용
+  </footer>
+
+  <script>
+    // ----- Likert scale builder -----
+    const labels = [
+      { v:1, t:'1 전혀 아니다' },
+      { v:2, t:'2 아니다' },
+      { v:3, t:'3 보통' },
+      { v:4, t:'4 그렇다' },
+      { v:5, t:'5 매우 그렇다' }
+    ];
+
+    document.querySelectorAll('.scale').forEach((el) => {
+      const id = el.dataset.id;
+      labels.forEach(l => {
+        const lab = document.createElement('label');
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = 'q' + id;
+        input.value = l.v;
+        lab.appendChild(input);
+        lab.appendChild(document.createTextNode(l.t));
+        el.appendChild(lab);
+      });
+    });
+
+    // ----- scoring -----
+    const domains = {
+      '자기인식': [1,2,3,4,5],
+      '자기관리': [6,7,8,9,10],
+      '사회인식': [11,12,13,14,15],
+      '관계관리': [16,17,18,19,20],
+    };
+
+    function getValue(q) {
+      const sel = document.querySelector(`input[name=q${q}]:checked`);
+      return sel ? Number(sel.value) : null;
+    }
+
+    function calcScores() {
+      const answers = Array.from({length:20}, (_,i) => getValue(i+1));
+      if (answers.some(v => v === null)) {
+        document.getElementById('hint').textContent = '아직 응답하지 않은 문항이 있습니다. 모두 응답 후 다시 시도하세요.';
+      } else {
+        document.getElementById('hint').textContent = '점수가 계산되었습니다. CSV로 저장하거나 링크 공유가 가능합니다.';
+      }
+
+      const sums = { total:0, sa:0, sm:0, so:0, rm:0 };
+      answers.forEach(v => { if(v) sums.total += v; });
+      domains['자기인식'].forEach(i => { const v = getValue(i); if(v) sums.sa += v; });
+      domains['자기관리'].forEach(i => { const v = getValue(i); if(v) sums.sm += v; });
+      domains['사회인식'].forEach(i => { const v = getValue(i); if(v) sums.so += v; });
+      domains['관계관리'].forEach(i => { const v = getValue(i); if(v) sums.rm += v; });
+
+      // render
+      document.getElementById('total').textContent = sums.total || '—';
+      document.getElementById('sa').textContent = sums.sa || '—';
+      document.getElementById('sm').textContent = sums.sm || '—';
+      document.getElementById('so').textContent = sums.so || '—';
+      document.getElementById('rm').textContent = sums.rm || '—';
+
+      const badge = document.getElementById('badge');
+      badge.className = 'pill';
+      if (sums.total >= 80) { badge.classList.add('ok'); badge.textContent = 'EQ 높음 (80+)'; }
+      else if (sums.total >= 60) { badge.classList.add('warn'); badge.textContent = 'EQ 보통 (60~79)'; }
+      else if (sums.total > 0) { badge.classList.add('bad'); badge.textContent = 'EQ 향상 필요 (<60)'; }
+      else { badge.textContent = '—'; }
+
+      return { answers, ...sums };
+    }
+
+    // ----- export CSV -----
+    function exportCSV() {
+      const { answers, total, sa, sm, so, rm } = calcScores();
+      const header = ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','q18','q19','q20','total','자기인식','자기관리','사회인식','관계관리'];
+      const row = [...answers.map(v => v ?? ''), total, sa, sm, so, rm];
+      const csv = [header.join(','), row.join(',')].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'eq_self_assessment.csv'; a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // ----- share via URL params -----
+    function shareLink() {
+      const { answers } = calcScores();
+      if (answers.some(v => v === null)) {
+        alert('모든 문항에 응답한 뒤 공유하세요.');
+        return;
+      }
+      const params = new URLSearchParams();
+      answers.forEach((v,i)=> params.set('q'+(i+1), v));
+      const url = location.origin + location.pathname + '?' + params.toString();
+      navigator.clipboard.writeText(url).then(()=>{
+        alert('현재 응답 링크를 클립보드에 복사했습니다.');
+      });
+    }
+
+    // ----- load from URL params -----
+    function loadFromQuery() {
+      const q = new URLSearchParams(location.search);
+      for (let i=1; i<=20; i++) {
+        const v = q.get('q'+i);
+        if (v) {
+          const sel = document.querySelector(`.scale[data-id="${i}"] input[value="${v}"]`);
+          if (sel) sel.checked = true;
+        }
+      }
+      calcScores();
+    }
+
+    // ----- reset -----
+    function resetForm() {
+      document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+      calcScores();
+    }
+
+    // events
+    document.getElementById('btn-calc').addEventListener('click', calcScores);
+    document.getElementById('btn-export').addEventListener('click', exportCSV);
+    document.getElementById('btn-share').addEventListener('click', shareLink);
+    document.getElementById('btn-reset').addEventListener('click', resetForm);
+    document.getElementById('btn-print').addEventListener('click', () => window.print());
+
+    // autorun
+    loadFromQuery();
+  </script>
+</body>
 </html>
