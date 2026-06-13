@@ -1,394 +1,379 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>EQ 자기 진단 (20문항)</title>
-  <meta name="description" content="감성지능(EQ) 20문항 자기진단 — 자기인식/자기관리/사회인식/관계관리 점수 자동 계산" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>상담심리학과 종강 집단상담 프로그램 만족도 조사</title>
   <style>
-    :root {
-      --bg: #0b1220;
-      --panel: #121a2b;
-      --muted: #9fb3c8;
-      --text: #eaf2ff;
-      --accent: #5eead4;
-      --accent-2: #93c5fd;
-      --danger: #fca5a5;
-      --warn: #fde68a;
-      --ok: #86efac;
-      --radius: 14px;
-    }
     * { box-sizing: border-box; }
     body {
-      margin: 0; padding: 24px; font-family: system-ui, -apple-system, Segoe UI, Roboto, Apple SD Gothic Neo, Noto Sans KR, sans-serif;
-      background: radial-gradient(1200px 700px at 10% -10%, #16213a 0, transparent 60%),
-                  radial-gradient(1000px 600px at 110% 10%, #1a2440 0, transparent 60%),
-                  var(--bg);
-      color: var(--text);
+      margin: 0;
+      font-family: "Noto Sans KR", "Malgun Gothic", Arial, sans-serif;
+      background: #f3f6fb;
+      color: #222;
+      line-height: 1.6;
     }
-    header { max-width: 960px; margin: 0 auto 16px auto; }
-    h1 { margin: 0 0 6px 0; font-size: 28px; }
-    p.lead { margin: 0 0 16px 0; color: var(--muted); }
-
-    .card { max-width: 960px; margin: 0 auto 18px auto; background: linear-gradient(180deg, #131d31, #0f172a);
-      border: 1px solid #1f2a44; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,.3);
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px;
     }
-    .card .head { display:flex; gap:12px; align-items:center; padding:16px 16px 0 16px; }
-    .card .body { padding: 16px; }
-
-    .row { display: grid; grid-template-columns: 1fr; gap: 12px; }
-    @media (min-width: 800px) { .row { grid-template-columns: 1fr 1fr; } }
-
-    details.group { background: #0e1628; border: 1px solid #1e2a45; border-radius: 12px; overflow: hidden; }
-    summary { list-style: none; cursor: pointer; padding: 14px 16px; font-weight: 700; display:flex; align-items:center; justify-content:space-between; }
-    summary::-webkit-details-marker { display:none; }
-    summary span.label { color: var(--accent); }
-    .q { padding: 12px 16px; border-top: 1px solid #1e2a45; }
-
-    .scale { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
-    .scale label { display:flex; align-items:center; gap:6px; background:#0c1424; border:1px solid #1e2a45; border-radius: 10px; padding:6px 10px; cursor:pointer; }
-    .scale input { accent-color: var(--accent); }
-
-    .toolbar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:flex-end; }
-    button, .btn {
-      background: linear-gradient(180deg, #1f324f, #182742);
-      color: var(--text); border:1px solid #2a3e63; border-radius: 10px; padding: 10px 12px; cursor: pointer;
+    .hero {
+      background: linear-gradient(135deg, #355c7d, #6c5b7b);
+      color: white;
+      padding: 34px 28px;
+      border-radius: 22px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+      margin-bottom: 22px;
     }
-    button:hover { filter: brightness(1.05); }
-    .btn-ghost { background: transparent; border-color:#2a3e63; }
-    .btn-accent { background: linear-gradient(180deg, #1f504a, #153a34); border-color:#2b6b62; }
-
-    .results { display:grid; gap:12px; grid-template-columns: 1fr; }
-    @media (min-width: 800px) { .results { grid-template-columns: repeat(5,1fr); } }
-    .stat { background:#0e1628; border:1px solid #1e2a45; padding:14px; border-radius: 12px; }
-    .stat h3 { margin:0 0 6px 0; font-size:14px; color: var(--muted); }
-    .stat .v { font-size: 26px; font-weight: 800; }
-    .pill { display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px; font-size:12px; }
-    .pill.ok { background: #0f2a1a; color:#b7f7c9; border:1px solid #1f5a38; }
-    .pill.warn { background: #2a260f; color:#fff3b0; border:1px solid #5a5120; }
-    .pill.bad { background: #2a1313; color:#ffd3d3; border:1px solid #5a2020; }
-    .muted { color: var(--muted); font-size: 14px; }
-    footer { max-width:960px; margin: 24px auto 0; color: var(--muted); font-size: 12px; text-align:center; }
-    .hint { font-size: 12px; color: var(--muted); }
-  @media print {
-    /* 용지/여백 */
-    @page { size: A4 portrait; margin: 8mm; }
-
-    /* 전역 축소 및 흑백화 */
-    html, body { background: #ffffff !important; color: #000 !important; padding: 0 !important; }
-    body { font-size: 9pt !important; line-height: 1.2 !important; zoom: 0.75; }
-    * { box-shadow: none !important; }
-
-    /* 불필요 요소 제거 */
-    footer, .toolbar, .btn, #btn-print, .card .head { display: none !important; }
-
-    /* 카드/레이아웃 최대 압축 */
-    header, .card { max-width: none !important; margin: 0 0 6px 0 !important; background: #fff !important; border: none !important; }
-    .card .body { padding: 6px !important; }
-
-    h1 { font-size: 16pt !important; margin: 0 0 4pt 0 !important;
-    html, body { background: #ffffff !important; color: #000 !important; padding: 0 !important; }
-    * { box-shadow: none !important; }
-    header, .card, footer { max-width: none !important; margin: 0 !important; background: #fff !important; border: none !important; }
-    h1 { font-size: 18pt; margin: 0 0 6pt 0; }
-    p.lead { font-size: 9pt; color: #000; margin-bottom: 6pt; }
-
-    /* 화면 전용 요소 숨김 */
-    .toolbar, .btn, #btn-print, .card .head { display: none !important; }
-
-    /* 레이아웃 컴팩트화 */
-    .card .body { padding: 8px !important; }
-    .row { grid-template-columns: 1fr !important; gap: 6px !important; }
-    details.group { border: 0.5px solid #ddd !important; background: #fff !important; }
-    summary { padding: 6px 8px !important; font-size: 11pt !important; color: #000 !important; }
-    .q { padding: 6px 8px !important; border-top: 0.5px solid #ddd !important; }
-
-    /* 척도: 라디오만 보이게(문구는 생략) → 한 페이지에 맞춤 */
-    .scale label { font-size: 0 !important; padding: 2px 4px !important; border-color: #ccc !important; background: #fff !important; }
-    .scale input { transform: scale(0.9); }
-
-    /* 결과 카드 컴팩트 */
-    .results { grid-template-columns: repeat(5, 1fr) !important; gap: 6px !important; }
-    .stat { padding: 6px !important; border: 0.5px solid #ccc !important; background: #fff !important; }
-    .stat .v { font-size: 14pt !important; color: #000 !important; }
-    .pill { font-size: 9pt !important; padding: 2px 6px !important; border: 0.5px solid #999 !important; }
-
-    /* 페이지 나눔 최소화 */
-    details.group, .stat, .results, .q { break-inside: avoid !important; page-break-inside: avoid !important; }
-
-    /* 전체 축소(여백/브라우저 차이 보정) */
-    body { zoom: 0.88; }
-  }
-
-  .print-only { display: none; }
-  @media print { .print-only { display: block; } .screen-only { display:none; } }
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      letter-spacing: -0.5px;
+    }
+    .hero p {
+      margin: 4px 0;
+      opacity: 0.95;
+    }
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 24px;
+      margin: 18px 0;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.07);
+    }
+    h2 {
+      margin-top: 0;
+      color: #2b3d52;
+      border-left: 6px solid #6c5b7b;
+      padding-left: 12px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+    }
+    select, input[type="text"], textarea {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #cfd6e1;
+      border-radius: 10px;
+      font-size: 15px;
+      background: #fff;
+    }
+    textarea { min-height: 88px; resize: vertical; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+    th, td {
+      border: 1px solid #d8dee8;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+    th {
+      background: #eef2f8;
+      color: #26384d;
+    }
+    td.question {
+      text-align: left;
+      width: 52%;
+      font-weight: 500;
+    }
+    input[type="radio"] {
+      transform: scale(1.25);
+      cursor: pointer;
+    }
+    .help {
+      color: #606b7a;
+      font-size: 14px;
+      margin-top: -6px;
+    }
+    .btns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 13px 20px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .primary { background: #355c7d; color: white; }
+    .secondary { background: #e8edf5; color: #2b3d52; }
+    .danger { background: #f3d9df; color: #8b2436; }
+    #result {
+      display: none;
+      border: 2px solid #355c7d;
+    }
+    .scoreBox {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .scoreItem {
+      background: #f3f6fb;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+    }
+    .scoreItem strong {
+      display: block;
+      font-size: 24px;
+      color: #355c7d;
+    }
+    .barWrap {
+      background: #e9edf4;
+      height: 18px;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 6px 0 14px;
+    }
+    .bar {
+      height: 100%;
+      width: 0%;
+      background: #6c5b7b;
+      transition: width 0.5s;
+    }
+    .notice {
+      background: #fff8e6;
+      border: 1px solid #f1d48a;
+      padding: 14px;
+      border-radius: 12px;
+      color: #6b5200;
+    }
+    @media (max-width: 720px) {
+      .wrap { padding: 14px; }
+      .hero h1 { font-size: 24px; }
+      .grid, .scoreBox { grid-template-columns: 1fr; }
+      table { font-size: 13px; }
+      th, td { padding: 7px; }
+      td.question { width: auto; }
+    }
+    @media print {
+      body { background: white; }
+      .btns, .notice { display: none; }
+      .card, .hero { box-shadow: none; }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>EQ 자기 진단 (20문항)</h1>
-    <p class="lead">감성지능(EQ)의 네 영역 — <strong>자기인식</strong>, <strong>자기관리</strong>, <strong>사회인식</strong>, <strong>관계관리</strong> — 을 1~5점 척도로 응답하세요. 결과는 자동으로 계산됩니다.</p>
-    <p class="print-only" style="margin-top:6px;font-size:10pt;color:#000">인쇄 안내: A4 한 페이지에 맞춰 축소 출력됩니다. 척도 표시는 라디오(○)로 표시되며, 척도값은 1~5입니다.</p>
-  </header>
+  <div class="wrap">
+    <section class="hero">
+      <h1>김천대학교 상담심리학과<br>종강 집단상담 프로그램 만족도 조사</h1>
+      <p><strong>일시:</strong> 오늘 오전 10시 ~ 오후 3시</p>
+      <p><strong>목적:</strong> 프로그램 만족도와 교육적 효과를 파악하여 향후 프로그램 개선에 활용합니다.</p>
+    </section>
 
-  <section class="card">
-    <div class="head">
-      <div class="toolbar" style="margin-left:auto">
-        <button id="btn-calc" class="btn-accent">점수 계산</button>
-        <button id="btn-reset" class="btn-ghost">초기화</button>
-        <button id="btn-export" class="btn-ghost">CSV 내보내기</button>
-        <button id="btn-share" class="btn-ghost">링크 공유</button>
-        <button id="btn-print" class="btn-ghost">인쇄</button>
+    <form id="surveyForm">
+      <section class="card">
+        <h2>Ⅰ. 기본사항</h2>
+        <div class="grid">
+          <div>
+            <label for="grade">학년</label>
+            <select id="grade">
+              <option value="">선택</option>
+              <option>1학년</option>
+              <option>2학년</option>
+              <option>3학년</option>
+              <option>4학년</option>
+              <option>기타</option>
+            </select>
+          </div>
+          <div>
+            <label for="age">연령대</label>
+            <select id="age">
+              <option value="">선택</option>
+              <option>20대 이하</option>
+              <option>30대</option>
+              <option>40대</option>
+              <option>50대</option>
+              <option>60대 이상</option>
+            </select>
+          </div>
+          <div>
+            <label for="type">참여 형태</label>
+            <select id="type">
+              <option value="">선택</option>
+              <option>온라인</option>
+              <option>오프라인</option>
+              <option>혼합</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Ⅱ. 만족도 평가</h2>
+        <p class="help">1점 = 전혀 그렇지 않다 / 2점 = 그렇지 않다 / 3점 = 보통이다 / 4점 = 그렇다 / 5점 = 매우 그렇다</p>
+        <table id="questionTable">
+          <thead>
+            <tr>
+              <th>문항</th>
+              <th>1점</th>
+              <th>2점</th>
+              <th>3점</th>
+              <th>4점</th>
+              <th>5점</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2>Ⅲ. 자유 의견</h2>
+        <p>
+          <label for="good">1. 오늘 프로그램에서 가장 도움이 되었던 점은 무엇입니까?</label>
+          <textarea id="good"></textarea>
+        </p>
+        <p>
+          <label for="insight">2. 새롭게 깨달은 점이나 기억에 남는 활동은 무엇입니까?</label>
+          <textarea id="insight"></textarea>
+        </p>
+        <p>
+          <label for="improve">3. 개선이 필요한 부분이 있다면 적어주십시오.</label>
+          <textarea id="improve"></textarea>
+        </p>
+        <p>
+          <label for="next">4. 앞으로 학과에서 운영했으면 하는 프로그램은 무엇입니까?</label>
+          <textarea id="next"></textarea>
+        </p>
+      </section>
+
+      <section class="card">
+        <div class="notice">
+          응답 후 <strong>평가결과 보기</strong>를 누르면 총점, 평균, 만족도 등급, 문항별 결과가 자동으로 표시됩니다.
+        </div>
+        <div class="btns">
+          <button type="button" class="primary" onclick="showResult()">평가결과 보기</button>
+          <button type="button" class="secondary" onclick="window.print()">인쇄 / PDF 저장</button>
+          <button type="reset" class="danger" onclick="resetResult()">초기화</button>
+        </div>
+      </section>
+    </form>
+
+    <section id="result" class="card">
+      <h2>Ⅳ. 평가결과</h2>
+      <div class="scoreBox">
+        <div class="scoreItem"><span>총점</span><strong id="totalScore">0</strong></div>
+        <div class="scoreItem"><span>평균</span><strong id="avgScore">0</strong></div>
+        <div class="scoreItem"><span>만족도</span><strong id="percentScore">0%</strong></div>
+        <div class="scoreItem"><span>종합평가</span><strong id="gradeText">-</strong></div>
       </div>
-    </div>
-    <div class="body">
-      <div class="row">
-        <!-- A. 자기인식 -->
-        <details class="group" open>
-          <summary><span class="label">A. 자기인식 (Self-Awareness)</span><span class="hint">문항 1-5</span></summary>
-          <div class="q">
-            <div>1) 나는 내가 지금 어떤 감정을 느끼는지 잘 알아차린다.</div>
-            <div class="scale" data-id="1" data-domain="자기인식"></div>
-          </div>
-          <div class="q">
-            <div>2) 나는 나의 강점과 약점을 비교적 정확히 알고 있다.</div>
-            <div class="scale" data-id="2" data-domain="자기인식"></div>
-          </div>
-          <div class="q">
-            <div>3) 기분이 변하면 내 행동과 말투도 달라진다는 것을 의식한다.</div>
-            <div class="scale" data-id="3" data-domain="자기인식"></div>
-          </div>
-          <div class="q">
-            <div>4) 중요한 결정을 내릴 때 내 감정이 어떤 영향을 미치는지 고려한다.</div>
-            <div class="scale" data-id="4" data-domain="자기인식"></div>
-          </div>
-          <div class="q">
-            <div>5) 나는 내 가치관과 그것이 내 행동에 미치는 영향을 이해한다.</div>
-            <div class="scale" data-id="5" data-domain="자기인식"></div>
-          </div>
-        </details>
+      <h3>문항별 응답 결과</h3>
+      <div id="detailResult"></div>
+      <h3>종합 해석</h3>
+      <p id="commentResult"></p>
+    </section>
+  </div>
 
-        <!-- B. 자기관리 -->
-        <details class="group" open>
-          <summary><span class="label">B. 자기관리 (Self-Management)</span><span class="hint">문항 6-10</span></summary>
-          <div class="q">
-            <div>6) 화가 나거나 속상할 때 감정을 잘 조절할 수 있다.</div>
-            <div class="scale" data-id="6" data-domain="자기관리"></div>
-          </div>
-          <div class="q">
-            <div>7) 스트레스를 받을 때 나만의 해소 방법을 활용한다.</div>
-            <div class="scale" data-id="7" data-domain="자기관리"></div>
-          </div>
-          <div class="q">
-            <div>8) 예상치 못한 상황에서도 침착하게 대처하려 노력한다.</div>
-            <div class="scale" data-id="8" data-domain="자기관리"></div>
-          </div>
-          <div class="q">
-            <div>9) 실수 후 금방 회복하고 다시 도전한다.</div>
-            <div class="scale" data-id="9" data-domain="자기관리"></div>
-          </div>
-          <div class="q">
-            <div>10) 목표를 세우면 꾸준히 노력하여 성취하려는 의지가 강하다.</div>
-            <div class="scale" data-id="10" data-domain="자기관리"></div>
-          </div>
-        </details>
+<script>
+const questions = [
+  "프로그램의 전체적인 진행에 만족한다.",
+  "프로그램의 내용이 흥미롭고 유익하였다.",
+  "프로그램 목표가 명확하게 전달되었다.",
+  "집단상담 활동에 적극적으로 참여할 수 있었다.",
+  "진행자의 설명과 진행 방식에 만족한다.",
+  "다른 참여자들과의 상호작용이 도움이 되었다.",
+  "자신을 이해하는 데 도움이 되었다.",
+  "타인을 이해하는 데 도움이 되었다.",
+  "정서적 안정감과 위로를 경험하였다.",
+  "프로그램 참여 후 긍정적인 변화를 느낀다.",
+  "프로그램 시간 운영은 적절하였다.",
+  "프로그램 장소 또는 온라인 환경에 만족한다.",
+  "향후 유사 프로그램에 다시 참여하고 싶다.",
+  "다른 학생에게 추천하고 싶다.",
+  "전반적으로 매우 만족한다."
+];
 
-        <!-- C. 사회인식 -->
-        <details class="group" open>
-          <summary><span class="label">C. 사회인식 (Social Awareness)</span><span class="hint">문항 11-15</span></summary>
-          <div class="q">
-            <div>11) 다른 사람의 감정을 표정이나 행동을 보고 잘 파악한다.</div>
-            <div class="scale" data-id="11" data-domain="사회인식"></div>
-          </div>
-          <div class="q">
-            <div>12) 상대의 이야기를 들을 때 그 사람의 입장에서 공감하려 한다.</div>
-            <div class="scale" data-id="12" data-domain="사회인식"></div>
-          </div>
-          <div class="q">
-            <div>13) 집단이나 모임의 분위기를 민감하게 느끼는 편이다.</div>
-            <div class="scale" data-id="13" data-domain="사회인식"></div>
-          </div>
-          <div class="q">
-            <div>14) 주변 사람들이 무엇을 필요로 하는지 자주 관찰하고 알아차린다.</div>
-            <div class="scale" data-id="14" data-domain="사회인식"></div>
-          </div>
-          <div class="q">
-            <div>15) 갈등 상황에서 여러 사람의 관점을 균형 있게 이해하려 한다.</div>
-            <div class="scale" data-id="15" data-domain="사회인식"></div>
-          </div>
-        </details>
+const tbody = document.querySelector("#questionTable tbody");
+questions.forEach((q, i) => {
+  const tr = document.createElement("tr");
+  let html = `<td class="question">${i + 1}. ${q}</td>`;
+  for (let s = 1; s <= 5; s++) {
+    html += `<td><input type="radio" name="q${i}" value="${s}" required></td>`;
+  }
+  tr.innerHTML = html;
+  tbody.appendChild(tr);
+});
 
-        <!-- D. 관계관리 -->
-        <details class="group" open>
-          <summary><span class="label">D. 관계관리 (Relationship Management)</span><span class="hint">문항 16-20</span></summary>
-          <div class="q">
-            <div>16) 다른 사람에게 동기를 부여하거나 격려하는 말을 잘한다.</div>
-            <div class="scale" data-id="16" data-domain="관계관리"></div>
-          </div>
-          <div class="q">
-            <div>17) 갈등이 생겼을 때 건설적으로 해결하려 노력한다.</div>
-            <div class="scale" data-id="17" data-domain="관계관리"></div>
-          </div>
-          <div class="q">
-            <div>18) 팀 활동에서 협력을 이끌고 분위기를 조율한다.</div>
-            <div class="scale" data-id="18" data-domain="관계관리"></div>
-          </div>
-          <div class="q">
-            <div>19) 설득이나 의견 제시를 할 때 상대방의 입장을 고려한다.</div>
-            <div class="scale" data-id="19" data-domain="관계관리"></div>
-          </div>
-          <div class="q">
-            <div>20) 새로운 관계를 맺고 유지하는 데 적극적이다.</div>
-            <div class="scale" data-id="20" data-domain="관계관리"></div>
-          </div>
-        </details>
-      </div>
-    </div>
-  </section>
+function showResult() {
+  let total = 0;
+  let scores = [];
 
-  <section class="card">
-    <div class="body">
-      <h2 style="margin-top:0">결과</h2>
-      <div class="results" id="results">
-        <div class="stat"><h3>총점 (20~100)</h3><div class="v" id="total">—</div><div class="pill" id="badge">—</div></div>
-        <div class="stat"><h3>A. 자기인식 (최대 25)</h3><div class="v" id="sa">—</div></div>
-        <div class="stat"><h3>B. 자기관리 (최대 25)</h3><div class="v" id="sm">—</div></div>
-        <div class="stat"><h3>C. 사회인식 (최대 25)</h3><div class="v" id="so">—</div></div>
-        <div class="stat"><h3>D. 관계관리 (최대 25)</h3><div class="v" id="rm">—</div></div>
-      </div>
-      <p class="muted" id="hint">모든 문항에 응답하면 점수와 해석이 표시됩니다.</p>
-    </div>
-  </section>
-
-  <footer>
-    © 2025 EQ Self-Assessment · MIT License · 제작: 당신의 수업용
-  </footer>
-
-  <script>
-    // ----- Likert scale builder -----
-    const labels = [
-      { v:1, t:'1 전혀 아니다' },
-      { v:2, t:'2 아니다' },
-      { v:3, t:'3 보통' },
-      { v:4, t:'4 그렇다' },
-      { v:5, t:'5 매우 그렇다' }
-    ];
-
-    document.querySelectorAll('.scale').forEach((el) => {
-      const id = el.dataset.id;
-      labels.forEach(l => {
-        const lab = document.createElement('label');
-        const input = document.createElement('input');
-        input.type = 'radio';
-        input.name = 'q' + id;
-        input.value = l.v;
-        lab.appendChild(input);
-        lab.appendChild(document.createTextNode(l.t));
-        el.appendChild(lab);
-      });
-    });
-
-    // ----- scoring -----
-    const domains = {
-      '자기인식': [1,2,3,4,5],
-      '자기관리': [6,7,8,9,10],
-      '사회인식': [11,12,13,14,15],
-      '관계관리': [16,17,18,19,20],
-    };
-
-    function getValue(q) {
-      const sel = document.querySelector(`input[name=q${q}]:checked`);
-      return sel ? Number(sel.value) : null;
+  for (let i = 0; i < questions.length; i++) {
+    const checked = document.querySelector(`input[name="q${i}"]:checked`);
+    if (!checked) {
+      alert(`${i + 1}번 문항에 응답해 주세요.`);
+      return;
     }
+    const score = Number(checked.value);
+    scores.push(score);
+    total += score;
+  }
 
-    function calcScores() {
-      const answers = Array.from({length:20}, (_,i) => getValue(i+1));
-      if (answers.some(v => v === null)) {
-        document.getElementById('hint').textContent = '아직 응답하지 않은 문항이 있습니다. 모두 응답 후 다시 시도하세요.';
-      } else {
-        document.getElementById('hint').textContent = '점수가 계산되었습니다. CSV로 저장하거나 링크 공유가 가능합니다.';
-      }
+  const max = questions.length * 5;
+  const avg = total / questions.length;
+  const percent = (total / max) * 100;
 
-      const sums = { total:0, sa:0, sm:0, so:0, rm:0 };
-      answers.forEach(v => { if(v) sums.total += v; });
-      domains['자기인식'].forEach(i => { const v = getValue(i); if(v) sums.sa += v; });
-      domains['자기관리'].forEach(i => { const v = getValue(i); if(v) sums.sm += v; });
-      domains['사회인식'].forEach(i => { const v = getValue(i); if(v) sums.so += v; });
-      domains['관계관리'].forEach(i => { const v = getValue(i); if(v) sums.rm += v; });
+  let grade = "";
+  let comment = "";
 
-      // render
-      document.getElementById('total').textContent = sums.total || '—';
-      document.getElementById('sa').textContent = sums.sa || '—';
-      document.getElementById('sm').textContent = sums.sm || '—';
-      document.getElementById('so').textContent = sums.so || '—';
-      document.getElementById('rm').textContent = sums.rm || '—';
+  if (avg >= 4.5) {
+    grade = "매우 만족";
+    comment = "프로그램에 대한 만족도가 매우 높습니다. 현재 운영 방식의 강점을 유지하면서 참여자 간 교류와 후속 프로그램으로 확장하면 좋습니다.";
+  } else if (avg >= 3.5) {
+    grade = "만족";
+    comment = "전반적으로 긍정적인 평가입니다. 일부 문항에서 낮은 점수가 나온 영역을 보완하면 더 좋은 프로그램으로 발전할 수 있습니다.";
+  } else if (avg >= 2.5) {
+    grade = "보통";
+    comment = "기본적인 만족도는 있으나 프로그램 구성, 진행 방식, 참여 활동 등에 대한 개선이 필요합니다.";
+  } else if (avg >= 1.5) {
+    grade = "불만족";
+    comment = "참여자의 기대와 프로그램 경험 사이에 차이가 있었던 것으로 보입니다. 운영 방식과 내용 구성에 대한 재검토가 필요합니다.";
+  } else {
+    grade = "매우 불만족";
+    comment = "프로그램 전반에 대한 큰 개선이 필요합니다. 참여자의 의견을 구체적으로 분석하여 다음 프로그램을 재설계해야 합니다.";
+  }
 
-      const badge = document.getElementById('badge');
-      badge.className = 'pill';
-      if (sums.total >= 80) { badge.classList.add('ok'); badge.textContent = 'EQ 높음 (80+)'; }
-      else if (sums.total >= 60) { badge.classList.add('warn'); badge.textContent = 'EQ 보통 (60~79)'; }
-      else if (sums.total > 0) { badge.classList.add('bad'); badge.textContent = 'EQ 향상 필요 (<60)'; }
-      else { badge.textContent = '—'; }
+  document.getElementById("totalScore").textContent = `${total} / ${max}`;
+  document.getElementById("avgScore").textContent = `${avg.toFixed(2)}점`;
+  document.getElementById("percentScore").textContent = `${percent.toFixed(1)}%`;
+  document.getElementById("gradeText").textContent = grade;
+  document.getElementById("commentResult").textContent = comment;
 
-      return { answers, ...sums };
-    }
+  let detail = "";
+  scores.forEach((score, i) => {
+    const barPercent = (score / 5) * 100;
+    detail += `
+      <p><strong>${i + 1}. ${questions[i]}</strong> — ${score}점</p>
+      <div class="barWrap"><div class="bar" style="width:${barPercent}%"></div></div>
+    `;
+  });
 
-    // ----- export CSV -----
-    function exportCSV() {
-      const { answers, total, sa, sm, so, rm } = calcScores();
-      const header = ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','q18','q19','q20','total','자기인식','자기관리','사회인식','관계관리'];
-      const row = [...answers.map(v => v ?? ''), total, sa, sm, so, rm];
-      const csv = [header.join(','), row.join(',')].join('\n');
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'eq_self_assessment.csv'; a.click();
-      URL.revokeObjectURL(url);
-    }
+  document.getElementById("detailResult").innerHTML = detail;
+  document.getElementById("result").style.display = "block";
+  document.getElementById("result").scrollIntoView({ behavior: "smooth" });
+}
 
-    // ----- share via URL params -----
-    function shareLink() {
-      const { answers } = calcScores();
-      if (answers.some(v => v === null)) {
-        alert('모든 문항에 응답한 뒤 공유하세요.');
-        return;
-      }
-      const params = new URLSearchParams();
-      answers.forEach((v,i)=> params.set('q'+(i+1), v));
-      const url = location.origin + location.pathname + '?' + params.toString();
-      navigator.clipboard.writeText(url).then(()=>{
-        alert('현재 응답 링크를 클립보드에 복사했습니다.');
-      });
-    }
-
-    // ----- load from URL params -----
-    function loadFromQuery() {
-      const q = new URLSearchParams(location.search);
-      for (let i=1; i<=20; i++) {
-        const v = q.get('q'+i);
-        if (v) {
-          const sel = document.querySelector(`.scale[data-id="${i}"] input[value="${v}"]`);
-          if (sel) sel.checked = true;
-        }
-      }
-      calcScores();
-    }
-
-    // ----- reset -----
-    function resetForm() {
-      document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
-      calcScores();
-    }
-
-    // events
-    document.getElementById('btn-calc').addEventListener('click', calcScores);
-    document.getElementById('btn-export').addEventListener('click', exportCSV);
-    document.getElementById('btn-share').addEventListener('click', shareLink);
-    document.getElementById('btn-reset').addEventListener('click', resetForm);
-    document.getElementById('btn-print').addEventListener('click', () => window.print());
-
-    // autorun
-    loadFromQuery();
-  </script>
+function resetResult() {
+  document.getElementById("result").style.display = "none";
+}
+</script>
 </body>
 </html>
